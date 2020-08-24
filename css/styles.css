@@ -129,16 +129,20 @@ button {
 
 /* Timer */
 #timerBox{
-    border: 1px solid #37474F;
+    border: 1px solid var(--color-neutral-light);
     width: 50%;
     height: 10px;
     align-self: center;
 }
 
 #timerFill{
-    background-color: #37474F;
-    width: 100%;
+    background-color: var(--color-neutral-light);
+    width: 1%;
     height: 9px;
+}
+
+#timerDisplay{
+    color: var(--color-neutral-light);
 }
 
 

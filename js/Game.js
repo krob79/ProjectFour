@@ -6,8 +6,10 @@ class Game {
         this.board = new Board();
         this.missed = 0;
         this.phrases = this.createPhrases();
+        this.hints = this.createHints();
         this.keys = this.grabKeyList();
         this.activePhrase = null;
+        this.activePhraseHint = null;
         this.hearts = [];
         this.timer = this.createTimer();
         this.interval = null;
@@ -25,24 +27,21 @@ class Game {
     
     startGame(){
         this.init();
-        this.startTimer(60);
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay(this.board);
         document.getElementById('overlay').style.display = 'none';
         console.log("active phrase is now: "+this.activePhrase.phrase);
+        this.startTimer(60);
     }
     /**
     *Creates phrase for use in the game
     *@return {array} An array of phrases that could be used
     */
     createPhrases(){
-//        let phrases = [
-//            "Hey this is a really long quote"
-//        ]
         let phrases = [
             "Yippee Ki Yay",
             "Do you feel lucky punk",
-            "Make My Day",
+            "Your move creep",
             "Ill be back",
             "Im too old for this"
         ]
@@ -52,15 +51,34 @@ class Game {
         return lowercasePhrases;
     }
     
+    createHints(){
+        let hints = [
+            "HINT: Die Hard Movie Quote",
+            "HINT: Dirty Harry Movie Quote",
+            "HINT: Robocop Movie Quote",
+            "HINT: Terminator Movie Quote",
+            "HINT: Lethal Weapon Movie Quote"
+        ]
+        return hints; 
+    }
+    
     createTimer(){
         let main = document.getElementById('main-container');
         let qwerty = document.getElementById('qwerty');
+        let scoreboard = document.getElementById('scoreboard');
         let div = document.createElement('DIV');
+        let numDisplay = document.createElement('DIV');
+        let hint = document.createElement('DIV');
+        hint.id = "hintDisplay";
+        hint.textContent = "";
+        numDisplay.id = "timerDisplay"
         div.id = "timerBox";
         let timerBar = document.createElement('DIV');
         timerBar.id = "timerFill";
         div.appendChild(timerBar);
-        qwerty.parentNode.insertBefore(div, qwerty);
+        div.appendChild(numDisplay);
+        qwerty.parentNode.insertBefore(hint, qwerty);
+        scoreboard.parentNode.insertBefore(div, scoreboard);
         
         return div;
     }
@@ -75,8 +93,13 @@ class Game {
                 self.gameOver("lose","OUT OF TIME!");
             }
             let perc = (count/seconds)*100;
-            console.log(`tick - ${count}/${seconds} - ${perc}`);
+            console.log(`tick - ${count}/${seconds} - ${perc} ${(perc > 50)}`);
+            if(perc > 50){
+                console.log("***"+self.activePhraseHint);
+                document.getElementById('hintDisplay').textContent = self.activePhraseHint;
+            }
             document.getElementById('timerFill').style.width = `${perc}%`;
+            document.getElementById('timerDisplay').textContent = `${seconds - count}`;
         }, 1000)
     }
     
@@ -96,6 +119,8 @@ class Game {
     
     getRandomPhrase(){
         let rand = Math.ceil(Math.random()*this.phrases.length-1);
+        this.activePhraseHint = this.hints[rand];
+        console.log("HINT: " + this.activePhraseHint);
         return new Phrase(this.phrases[rand]);
     }
     
@@ -131,25 +156,27 @@ class Game {
         this.hearts[this.missed].src = "/images/lostHeart.png";
         this.missed++;
         if(this.missed >= this.hearts.length){
-           this.gameOver('lose', "Sorry, better luck next time!");
+           this.gameOver('lose', "Sorry! Better luck next time!");
         }
     }
     
     checkForWin(){
+        let self = this;
         let totalLetters = Array.from(this.activePhrase.phraseList.getElementsByClassName('letter'));
         let revealedLetters = Array.from(this.activePhrase.phraseList.getElementsByClassName('show'));
         if(totalLetters.length == revealedLetters.length){
-           this.gameOver('win', "Great Job!");
+           setTimeout(function(){self.gameOver('win', "Nice Job!")},1500);
         }
     }
     
     gameOver(winOrLoseString, message){
         this.stopTimer();
         console.log("GAME OVER");
+        document.getElementById('timerFill').style.width = '1%';
         let overlay = document.getElementById('overlay');
         let msg = document.getElementById('game-over-message');
         msg.innerHTML = message;
-        overlay.style.display = 'block';
+        overlay.style.display = 'flex';
         overlay.className = winOrLoseString;
     }
     
