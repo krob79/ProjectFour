@@ -4,8 +4,6 @@
 
 let game = null;
 
-//console.log(`PHRASEs: ${game.getRandomPhrase().addPhraseToDisplay(game.board)}`);
-
 document.getElementById('btn__reset').addEventListener('click', function(){
     if(!game){
        game = new Game();
@@ -13,3 +11,4 @@ document.getElementById('btn__reset').addEventListener('click', function(){
     game.startGame();
 });
 
+document.addEventListener('keyup', (e) => game.handleInteraction(e));

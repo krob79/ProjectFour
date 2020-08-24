@@ -13,10 +13,12 @@ class Game {
         this.hearts = [];
         this.timer = this.createTimer();
         this.interval = null;
-        document.addEventListener('keyup', (e) => this.handleInteraction(e));
     }
     
     init(){
+        document.getElementById('hintDisplay').textContent = "";
+        document.getElementById('hintDisplay').className = '';
+        document.getElementById('timerFill').style.backgroundColor = '';
         //reset classes on keys so they are selectable
         this.keys.forEach(key => key.className = 'key');
         //reset heart display and misses count to 0 
@@ -30,7 +32,6 @@ class Game {
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay(this.board);
         document.getElementById('overlay').style.display = 'none';
-        console.log("active phrase is now: "+this.activePhrase.phrase);
         this.startTimer(60);
     }
     /**
@@ -95,8 +96,12 @@ class Game {
             let perc = (count/seconds)*100;
             console.log(`tick - ${count}/${seconds} - ${perc} ${(perc > 50)}`);
             if(perc > 50){
-                console.log("***"+self.activePhraseHint);
                 document.getElementById('hintDisplay').textContent = self.activePhraseHint;
+                document.getElementById('timerFill').style.width = `${perc}%`;
+            }
+            if(perc > 80){
+                document.getElementById('hintDisplay').className = 'timerDisplayAlmostOver';
+               document.getElementById('timerFill').style.backgroundColor = 'red';
             }
             document.getElementById('timerFill').style.width = `${perc}%`;
             document.getElementById('timerDisplay').textContent = `${seconds - count}`;

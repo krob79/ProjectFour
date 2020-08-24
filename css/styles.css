@@ -145,6 +145,13 @@ button {
     color: var(--color-neutral-light);
 }
 
+.timerFillAlmostOver{
+    background-color: red;
+}
+.timerDisplayAlmostOver{
+    color:red;
+}
+
 
 /* Keyboard */
 
