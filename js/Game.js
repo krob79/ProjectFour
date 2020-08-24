@@ -19,6 +19,7 @@ class Game {
         document.getElementById('hintDisplay').textContent = "";
         document.getElementById('hintDisplay').className = '';
         document.getElementById('timerFill').style.backgroundColor = '';
+        document.getElementById('timerDisplay').style.color = '';
         //reset classes on keys so they are selectable
         this.keys.forEach(key => key.className = 'key');
         //reset heart display and misses count to 0 
@@ -102,6 +103,7 @@ class Game {
             if(perc > 80){
                 document.getElementById('hintDisplay').className = 'timerDisplayAlmostOver';
                document.getElementById('timerFill').style.backgroundColor = 'red';
+                document.getElementById('timerDisplay').style.color = 'red';
             }
             document.getElementById('timerFill').style.width = `${perc}%`;
             document.getElementById('timerDisplay').textContent = `${seconds - count}`;
