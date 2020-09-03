@@ -2,8 +2,9 @@
  * Project 4 - OOP Game App
  * Phrase.js */
 class Phrase{
-    constructor(phrase){
+    constructor(phrase, hint=""){
         this.phrase = phrase;
+        this.hint = hint;
         this.phraseList = this.grabPhraseList();
     }
     
@@ -23,12 +24,13 @@ class Phrase{
         chars.forEach(letter => {
             let li = document.createElement('LI');
             //display letters in uppercase, for better readability
+            //however, make sure any letter classes in the LI tags are lowercase
             let txt = document.createTextNode(`${letter.toUpperCase()}`);
             li.appendChild(txt);
             if(letter == ' '){
                 li.className = `space`;
             }else{
-                li.className = `hide letter ${letter}`;
+                li.className = `hide letter ${letter.toLowerCase()}`;
             }
             //add child to <ul>
             this.phraseList.appendChild(li);

@@ -6,10 +6,8 @@ class Game {
         this.board = new Board();
         this.missed = 0;
         this.phrases = this.createPhrases();
-        this.hints = this.createHints();
         this.keys = this.grabKeyList();
         this.activePhrase = null;
-        this.activePhraseHint = null;
         this.hearts = [];
         this.timer = this.createTimer();
         this.interval = null;
@@ -40,28 +38,19 @@ class Game {
     *@return {array} An array of phrases that could be used
     */
     createPhrases(){
+        /*Changes
+        -Make Phrases array objects instead of strings
+        -Change where the toLowerCase method is used to match letters
+        -Change code where hint is displayed
+        */
         let phrases = [
-            "Yippee Ki Yay",
-            "Do you feel lucky punk",
-            "Your move creep",
-            "Ill be back",
-            "Im too old for this"
+            new Phrase("Yippee Ki Yay", "Die Hard Movie"),
+            new Phrase("Do you feel lucky punk", "Dirty Harry Movie"),
+            new Phrase("Your move creep", "Robocop Movie"),
+            new Phrase("Ill be back", "Terminator Movie"),
+            new Phrase("Im too old for this", "Lethal Weapon Movie")
         ]
-        let lowercasePhrases = phrases.map((item) => {
-            return item.toLowerCase();
-        });
-        return lowercasePhrases;
-    }
-    
-    createHints(){
-        let hints = [
-            "HINT: Die Hard Movie Quote",
-            "HINT: Dirty Harry Movie Quote",
-            "HINT: Robocop Movie Quote",
-            "HINT: Terminator Movie Quote",
-            "HINT: Lethal Weapon Movie Quote"
-        ]
-        return hints; 
+        return phrases;
     }
     
     createTimer(){
@@ -91,18 +80,16 @@ class Game {
         this.interval = setInterval(function(){
             count++;
             if(count >= seconds){
-                console.log("stop tick");
                 self.gameOver("lose","OUT OF TIME!");
             }
             let perc = (count/seconds)*100;
-            console.log(`tick - ${count}/${seconds} - ${perc} ${(perc > 50)}`);
             if(perc > 50){
-                document.getElementById('hintDisplay').textContent = self.activePhraseHint;
+                document.getElementById('hintDisplay').textContent = `HINT: ${self.activePhrase.hint}`;
                 document.getElementById('timerFill').style.width = `${perc}%`;
             }
             if(perc > 80){
                 document.getElementById('hintDisplay').className = 'timerDisplayAlmostOver';
-               document.getElementById('timerFill').style.backgroundColor = 'red';
+                document.getElementById('timerFill').style.backgroundColor = 'red';
                 document.getElementById('timerDisplay').style.color = 'red';
             }
             document.getElementById('timerFill').style.width = `${perc}%`;
@@ -116,35 +103,29 @@ class Game {
     
     grabKeyList(){
         let keys = Array.from(document.getElementsByClassName('key'));
-        for(let i = 0; i < keys.length; i++){
-            keys[i].addEventListener('click', (e) => {
-                game.handleInteraction(e);
-            });
-        };
         return keys;
     }
     
     getRandomPhrase(){
         let rand = Math.ceil(Math.random()*this.phrases.length-1);
-        this.activePhraseHint = this.hints[rand];
-        console.log("HINT: " + this.activePhraseHint);
-        return new Phrase(this.phrases[rand]);
+        console.log(this.phrases[rand].phrase);
+        return this.phrases[rand];
     }
     
     handleInteraction(event){
         let keyElement = null;
+        //if the event has a 'key' property, it's from the keyup event, so assign keyElement the onscreen key that has the same innerHTML content as the event.key value
         if(event.key){
-            console.log(`KEY: ${event.code}`);
             if(event.code.includes('Key')){
-                console.log("Yes, it's a letter");
                 keyElement = this.keys.find(element => element.innerHTML === event.key);
             }else{
                 return;
             }
-            
+        //otherwise, just assign keyElement the target of the event
         }else{
             keyElement = event.target;
         }
+        //check if the key's class has already been switched to 'chosen' or 'wrong' from a previous guess
         if(keyElement.className != 'chosen' && keyElement.className != 'wrong'){
             let keyVal = keyElement.innerHTML.toString();
             if(this.activePhrase.checkLetter(keyVal)){
@@ -186,8 +167,5 @@ class Game {
         overlay.style.display = 'flex';
         overlay.className = winOrLoseString;
     }
-    
-    
-    
     
 }

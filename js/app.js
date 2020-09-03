@@ -11,4 +11,11 @@ document.getElementById('btn__reset').addEventListener('click', function(){
     game.startGame();
 });
 
+let keys = Array.from(document.getElementsByClassName('key'));
+for(let i = 0; i < keys.length; i++){
+    keys[i].addEventListener('click', (e) => {
+        game.handleInteraction(e);
+    });
+};
+
 document.addEventListener('keyup', (e) => game.handleInteraction(e));
