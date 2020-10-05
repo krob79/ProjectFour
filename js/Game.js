@@ -141,7 +141,7 @@ class Game {
     }
     
     removeLife(){
-        this.hearts[this.missed].src = "./images/lostHeart.png";
+        this.hearts[this.missed].src = "https://github.com/krob79/ProjectFour/blob/master/images/lostHeart.png";
         this.missed++;
         if(this.missed >= this.hearts.length){
            this.gameOver('lose', "Sorry! Better luck next time!");
