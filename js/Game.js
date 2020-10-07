@@ -22,7 +22,7 @@ class Game {
         this.keys.forEach(key => key.className = 'key');
         //reset heart display and misses count to 0 
         this.hearts = Array.from(this.board.scoreBoard.getElementsByTagName('img'));
-        this.hearts.forEach(heart => heart.src = "./images/liveHeart.png");
+        this.hearts.forEach(heart => heart.src = "./poop/images/liveHeart.png");
         this.missed=0;
     }
     
@@ -141,7 +141,7 @@ class Game {
     }
     
     removeLife(){
-        this.hearts[this.missed].src = "./images/lostHeart.png";
+        this.hearts[this.missed].src = "./poop/images/lostHeart.png";
         this.missed++;
         if(this.missed >= this.hearts.length){
            this.gameOver('lose', "Sorry! Better luck next time!");
