@@ -6,7 +6,7 @@ A customizable timer has been added for additional challenge, but a hint display
 There's also a slight pause after the user guesses the final correct letter so they can see the phrase before the "Win" overlay displays.
 
 ## Languages & Tools Used
-![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=white&style=flat-square)
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=blue&style=flat-square)
 ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white&style=flat-square)
 ![CSS3](https://img.shields.io/badge/-CSS3-1572B6?logo=css3&logoColor=white&style=flat-square)
 ![Static Badge](https://img.shields.io/badge/(.*)-RegEx-pink?logoColor=pink&labelColor=pink)
